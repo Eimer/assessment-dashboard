@@ -1,0 +1,50 @@
+.auth-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 700px;
+  padding: 20px 10px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  background-image: linear-gradient(to right, #593795 0%, #572f88 100%);
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+
+    h1 {
+      margin: 10px;
+      color: #fff;
+    }
+
+    &_input,
+    button {
+      width: 100%;
+      outline: none;
+      border: none;
+      padding: 6px;
+      font-size: 14px;
+      border-radius: 10px;
+      margin: 15px;
+    }
+
+    button {
+      max-width: 100px;
+      cursor: pointer;
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+
+    .error-field {
+      border: 1px solid red;
+    }
+  }
+}
