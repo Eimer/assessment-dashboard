@@ -2,7 +2,10 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ApiService} from "../../services/api.service";
 import {HandleResponseService} from "../../services/handle-response.service";
-import {tap} from "rxjs";
+import {catchError, of, tap} from "rxjs";
+import {Router} from "@angular/router";
+import {User} from "../../interfaces/user";
+import {UserService} from "../../services/user.service";
 
 
 @Component({
@@ -18,10 +21,13 @@ export class AuthUserComponent {
    */
   public authForm!: FormGroup;
 
+  public isAuthEnabled = true;
+
   constructor(
     private _fb: FormBuilder,
-    private _apiService: ApiService,
+    private _userService: UserService,
     private _responseHandler: HandleResponseService,
+    private _router: Router,
   ) {
     this.initAuthForm();
   }
@@ -33,33 +39,38 @@ export class AuthUserComponent {
   private initAuthForm() {
     this.authForm = this._fb.group(
       {
-        email: [null, [Validators.required, Validators.maxLength(255)]],
-        password: [null, [Validators.required, Validators.maxLength(12)]],
+        email: [null, [Validators.required, Validators.maxLength(255), Validators.minLength(3)]],
+        password: [null, [Validators.required, Validators.minLength(6)]],
       }
     )
   }
 
-  private applyFormErrors() {
-    if (this.authForm.invalid) {
+  private applyFormErrors(loginError: boolean = false, passError: boolean = false) {
+    console.log(this.authForm)
+    if (this.authForm.invalid || loginError || passError) {
       this.authForm.setErrors({
-        login: !!this.getFieldControl('login')?.errors || false,
-        password: !!this.getFieldControl('password')?.errors || false
+        email: loginError || !!this.getFieldControl('email')?.errors || false,
+        password: passError || !!this.getFieldControl('password')?.errors || false
       })
     }
-
   }
 
   public authUser() {
     this.applyFormErrors();
     if (!this.authForm.errors) {
-      this._apiService.login(this.authForm.value).pipe(
-        tap((response: any) => {
-          this._responseHandler.handleResponseStatus(response.status)
+      this.isAuthEnabled = false;
+      this._userService.login(this.authForm.value).pipe(
+        tap((response: User) => {
+          this._userService.initUser(response);
+          this._router.navigateByUrl('/home');
+          this.isAuthEnabled = true;
         }),
-      ).
-      subscribe( (e: any) => {
-        console.log(e);
-      })
+        catchError((error) => {
+          this.applyFormErrors(true, true);
+          this.isAuthEnabled = true;
+          return of(error);
+        })
+      ).subscribe();
     }
   }
 }

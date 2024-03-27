@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
+const domainUrl = 'https://user-assessment-api.vercel.app/';
 @Injectable({
   providedIn: 'root'
 })
@@ -32,8 +33,11 @@ export class ApiService {
     return this.http.post(url, opts);
   }
 
-  login(options: object) {
-    return this.post('https://user-assessment-api.vercel.app/api/login', options)
+  public getDashboardData(options?: object) {
+    return this.get(`${domainUrl}api/userassessments`, options)
   }
 
+  public getBarData(id :number) {
+    return this.get(`${domainUrl}api/userassessments/graph/?${id}`)
+  }
 }

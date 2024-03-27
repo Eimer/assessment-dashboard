@@ -1,1 +1,30 @@
-<p>dashboard works!</p>
+<div class="container">
+    <ng-container *ngIf="user.role === 'User'">
+        <ng-container *ngIf="!isBar">
+            <ng-container *ngTemplateOutlet="dashboardSection"></ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="isBar">
+            <ng-container *ngTemplateOutlet="barSection"></ng-container>
+        </ng-container>
+
+        <ng-template #dashboardSection>
+            <ng-container *ngIf="dashboardData$ | async as dashboardData">
+                <div class="dashboard" *ngFor="let dashboard of dashboardData">
+                    <img [src]="dashboard.image_url" alt="" (click)="toggleBar()">
+                </div>
+            </ng-container>
+        </ng-template>
+
+        <ng-template #barSection>
+            <ng-container *ngIf="barData$ | async as barData">
+                <div class="bar" *ngFor="let barItem of barData">
+
+                </div>
+            </ng-container>
+        </ng-template>
+
+    </ng-container>
+</div>
+
+<ng-template #adminSection></ng-template>

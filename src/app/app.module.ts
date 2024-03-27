@@ -7,8 +7,9 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthUserComponent } from './components/auth-user/auth-user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import {AuthInterceptorService} from "./services/auth-interceptor.service";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,13 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ReactiveFormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
