@@ -1,7 +1,5 @@
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {ApiService} from "../../services/api.service";
-import {HandleResponseService} from "../../services/handle-response.service";
 import {catchError, of, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {User} from "../../interfaces/user";
@@ -15,7 +13,6 @@ import {UserService} from "../../services/user.service";
 })
 
 export class AuthUserComponent {
-
   /**
    * Form to manage user fields
    */
@@ -26,9 +23,7 @@ export class AuthUserComponent {
   constructor(
     private _fb: FormBuilder,
     private _userService: UserService,
-    private _responseHandler: HandleResponseService,
     private _router: Router,
-    private _cookie: CookieServi
   ) {
     this.initAuthForm();
   }
@@ -46,8 +41,13 @@ export class AuthUserComponent {
     )
   }
 
+  /**
+   * Set errors if something wrong or set custom errors
+   *
+   * @param loginError
+   * @param passError
+   */
   private applyFormErrors(loginError: boolean = false, passError: boolean = false) {
-    console.log(this.authForm)
     if (this.authForm.invalid || loginError || passError) {
       this.authForm.setErrors({
         email: loginError || !!this.getFieldControl('email')?.errors || false,
@@ -56,16 +56,18 @@ export class AuthUserComponent {
     }
   }
 
+  /**
+   * Triggers when user try to log in
+   */
   public authUser() {
-    this.applyFormErrors();
-    if (!this.authForm.errors) {
+    if (!this.authForm.errors || (!this.authForm.errors['email'] && !this.authForm.errors['password'])) {
       this.isAuthEnabled = false;
       this._userService.login(this.authForm.value).pipe(
         tap((response: User) => {
           this._userService.initUser(response);
-          this._router.navigateByUrl('/home');
           this.isAuthEnabled = true;
         }),
+        tap( () => this._router.navigateByUrl('/home')),
         catchError((error) => {
           this.applyFormErrors(true, true);
           this.isAuthEnabled = true;

@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
-import { AuthUserComponent } from './components/auth-user/auth-user.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {HomeComponent} from './components/home/home.component';
+import {AuthUserComponent} from './components/auth-user/auth-user.component';
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import { NotFoundComponent } from './components/not-found/not-found.component';
+import {NotFoundComponent} from './components/not-found/not-found.component';
 import {AuthInterceptorService} from "./services/auth-interceptor.service";
+import {HeaderComponent} from './components/header/header.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import {AuthInterceptorService} from "./services/auth-interceptor.service";
     HomeComponent,
     AuthUserComponent,
     DashboardComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
@@ -34,4 +35,5 @@ import {AuthInterceptorService} from "./services/auth-interceptor.service";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

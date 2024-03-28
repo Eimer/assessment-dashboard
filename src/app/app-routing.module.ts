@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {AuthUserComponent} from "./components/auth-user/auth-user.component";
 import {NotFoundComponent} from "./components/not-found/not-found.component";
 import {HomeComponent} from "./components/home/home.component";
@@ -20,7 +20,7 @@ const routes: Routes = [
     canActivate: [AuthGuardService]
   },
   {
-    path: '', pathMatch: 'full', redirectTo: '/login'
+    path: '', pathMatch: 'full', redirectTo: '/home'
   },
   {
     path: '**',
@@ -32,4 +32,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

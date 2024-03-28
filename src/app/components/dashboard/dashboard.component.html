@@ -1,30 +1,66 @@
 <div class="container">
-    <ng-container *ngIf="user.role === 'User'">
-        <ng-container *ngIf="!isBar">
-            <ng-container *ngTemplateOutlet="dashboardSection"></ng-container>
-        </ng-container>
+  <ng-container *ngIf="user.role === userRoles.ADMIN">
+    <div class="admin-panel">
+      <nav class="admin-panel__navigation">
+        <a (click)="toggleSection(false)"
+           [ngStyle]="{'background': !isAdminSection ? 'lightgrey' : 'none'}">Main section</a>
+        <a (click)="toggleSection(true)"
+           [ngStyle]="{'background': isAdminSection ? 'lightgrey' : 'none'}">Admin section</a>
+      </nav>
+    </div>
+  </ng-container>
 
-        <ng-container *ngIf="isBar">
-            <ng-container *ngTemplateOutlet="barSection"></ng-container>
-        </ng-container>
-
-        <ng-template #dashboardSection>
-            <ng-container *ngIf="dashboardData$ | async as dashboardData">
-                <div class="dashboard" *ngFor="let dashboard of dashboardData">
-                    <img [src]="dashboard.image_url" alt="" (click)="toggleBar()">
-                </div>
-            </ng-container>
-        </ng-template>
-
-        <ng-template #barSection>
-            <ng-container *ngIf="barData$ | async as barData">
-                <div class="bar" *ngFor="let barItem of barData">
-
-                </div>
-            </ng-container>
-        </ng-template>
-
+  <ng-container *ngIf="user.role === userRoles.ADMIN && isAdminSection">
+    <ng-container *ngIf="usersInfo | async as usersInfo">
+      <table class="table">
+        <thead class="table__head">
+        <tr>
+          <th>{{usersFields.NAME}}</th>
+          <th>{{usersFields.LAST_NAME}}</th>
+          <th>{{usersFields.DATE_OF_BIRTH}}</th>
+          <th>{{usersFields.ROLE}}</th>
+          <th>{{usersFields.POSITION}}</th>
+        </tr>
+        </thead>
+        <tbody class="table__body">
+        <tr *ngFor="let user of usersInfo">
+          <td>{{user.name}}</td>
+          <td>{{user.lastName}}</td>
+          <td>{{user.dateOfBirth}}</td>
+          <td>{{user.role}}</td>
+          <td>{{user.position}}</td>
+        </tr>
+        </tbody>
+      </table>
     </ng-container>
-</div>
+  </ng-container>
 
-<ng-template #adminSection></ng-template>
+  <ng-container *ngIf="!isAdminSection">
+    <ng-container *ngIf="!isBar">
+      <ng-container *ngTemplateOutlet="dashboardSection"></ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="isBar">
+      <ng-container *ngTemplateOutlet="barSection"></ng-container>
+    </ng-container>
+
+    <ng-template #dashboardSection>
+      <ng-container *ngIf="dashboardData$ | async as dashboardData">
+        <div class="dashboard" *ngFor="let dashboard of dashboardData">
+          <img [src]="dashboard.image_url" alt="" (click)="toggleBar(dashboard.id)">
+        </div>
+      </ng-container>
+    </ng-template>
+
+    <ng-template #barSection>
+      <ng-container *ngIf="barData$ | async">
+        <div class="bar">
+          <canvas id="BarChart" width="700" height="500"></canvas>
+        </div>
+      </ng-container>
+      <div class="bottom-actions">
+        <button class="bottom-actions__btn" (click)="toggleBar()">Change view</button>
+      </div>
+    </ng-template>
+  </ng-container>
+</div>

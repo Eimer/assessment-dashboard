@@ -24,13 +24,12 @@ export class AuthInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const authReq =  this._user.userInfo?.token ? req.clone({
+    const authReq = this._user.userInfo?.token ? req.clone({
       headers: req.headers.set(
         'X-Token',
         this._user.userInfo.token
       ),
     }) : req;
-    console.log(this._user.userInfo?.token);
     return next.handle(authReq).pipe(
       tap(
         (err) => {

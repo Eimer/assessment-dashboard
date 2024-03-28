@@ -1,5 +1,8 @@
 <div class="container">
-    <div class="container__view">
-        <app-dashboard></app-dashboard>
-    </div>
+  <ng-container *ngIf="isLogoutEnable">
+    <app-header></app-header>
+  </ng-container>
+  <div class="container__view">
+    <app-dashboard></app-dashboard>
+  </div>
 </div>

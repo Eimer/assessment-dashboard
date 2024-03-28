@@ -1,0 +1,28 @@
+:host .container {
+  width: 100vw;
+  height: 65px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+
+  &__actions {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+
+    &_btn {
+      width: 100%;
+      max-width: 150px;
+      height: 50px;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      background: lightgray;
+
+      &:active {
+        transform: scale(0.95);
+      }
+    }
+  }
+}
