@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {ApiService} from "../../services/api.service";
 import {Observable, tap} from "rxjs";
+import {Dashboard} from "../../interfaces/dashboard";
 
 @Component({
     selector: 'app-dashboard',
@@ -10,7 +11,7 @@ import {Observable, tap} from "rxjs";
 })
 export class DashboardComponent implements OnInit {
 
-    private _dashboardData$: Observable<any> = this._initData$();
+    private _dashboardData$: Observable<Dashboard[]> = this._initData$();
     private _barData$: Observable<any> = this._initBarData$();
     private dashboardId!: number
     public user = this._userService.userInfo;
@@ -29,7 +30,7 @@ export class DashboardComponent implements OnInit {
     private _initData$(): Observable<any> {
         return this._apiService.getDashboardData().pipe(
             tap( (response) => {
-                console.log(response[0].id);
+                console.log(response);
                 this.dashboardId = response.id;
             })
         )

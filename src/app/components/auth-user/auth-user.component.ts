@@ -28,6 +28,7 @@ export class AuthUserComponent {
     private _userService: UserService,
     private _responseHandler: HandleResponseService,
     private _router: Router,
+    private _cookie: CookieServi
   ) {
     this.initAuthForm();
   }
